@@ -126,10 +126,14 @@
                     <div class="w-full md:w-auto">
                         <select id="languageSelect" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-2.5 outline-none font-medium">
                             <option value="English">🇺🇸 English</option>
+                            <option value="British English">🇬🇧 English (UK)</option>
                             <option value="Spanish">🇪🇸 Spanish</option>
                             <option value="French">🇫🇷 French</option>
                             <option value="German">🇩🇪 German</option>
                             <option value="Hindi">🇮🇳 Hindi</option>
+                            <option value="Portuguese">🇧🇷 Portuguese</option>
+                            <option value="Chinese">🇨🇳 Chinese</option>
+                            <option value="Japanese">🇯🇵 Japanese</option>
                         </select>
                     </div>
 
@@ -149,8 +153,8 @@
                 <div id="result" class="hidden mt-6">
                     <div class="flex justify-between items-end mb-2">
                         <span class="text-xs font-bold text-green-600 uppercase tracking-wider">Result</span>
-                        <button onclick="copyText()" class="text-xs flex items-center gap-1 text-slate-400 hover:text-brand-600 transition">
-                            <i data-lucide="copy" class="w-3 h-3"></i> Copy
+                        <button onclick="copyText()" class="group text-xs flex items-center gap-1 text-slate-400 hover:text-brand-600 transition">
+                            <span id="copyBtnText" class="flex items-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i> Copy</span>
                         </button>
                     </div>
                     <textarea id="outputText" readonly class="w-full h-40 bg-white border border-green-200 rounded-xl p-5 text-slate-800 outline-none"></textarea>
@@ -206,7 +210,9 @@
             <div>
                 <h4 class="font-bold text-slate-900 mb-4">Product</h4>
                 <ul class="space-y-2 text-sm text-slate-500">
-                    <li><a href="#tool" class="hover:text-brand-600">Email Rewriter</a></li>
+                    <li><a href="#tool" onclick="setMode('rewrite')" class="hover:text-brand-600">Email Rewriter</a></li>
+                    <li><a href="#tool" onclick="setMode('reply')" class="hover:text-brand-600">Reply Generator</a></li>
+                    <li><a href="#tool" onclick="analyzeTone()" class="hover:text-brand-600">Tone Analyzer</a></li>
                     <li><a href="blog.html" class="hover:text-brand-600">Blog</a></li>
                 </ul>
             </div>
@@ -284,10 +290,25 @@
             event.target.classList.add('ring-2', 'ring-brand-500');
         }
 
-        async function analyzeTone() {
+        // --- UPDATED VALIDATION (No Alerts) ---
+        function validateInput() {
             const text = document.getElementById('inputText').value;
-            if(!text) return alert("Please type something first!");
+            if(!text.trim()) {
+                const input = document.getElementById('inputText');
+                input.classList.add('ring-2', 'ring-red-500', 'bg-red-50');
+                input.placeholder = "⚠️ Please type something here first...";
+                setTimeout(() => {
+                    input.classList.remove('ring-2', 'ring-red-500', 'bg-red-50');
+                }, 2000);
+                return false;
+            }
+            return true;
+        }
+
+        async function analyzeTone() {
+            if(!validateInput()) return;
             
+            const text = document.getElementById('inputText').value;
             document.getElementById('scorePanel').classList.remove('hidden');
             document.getElementById('scoreText').innerText = "Analyzing...";
             document.getElementById('scoreBar').style.width = "0%";
@@ -316,10 +337,10 @@
         }
 
         async function generate() {
+            if(!validateInput()) return;
+
             const text = document.getElementById('inputText').value;
             const language = document.getElementById('languageSelect').value;
-
-            if(!text) return alert("Please type something first!");
 
             document.getElementById('loading').classList.remove('hidden');
             document.getElementById('result').classList.add('hidden');
@@ -341,17 +362,31 @@
                 document.getElementById('outputText').value = data.result;
                 document.getElementById('result').classList.remove('hidden');
             } catch (error) {
-                alert("Connection error.");
+                // UI Error handling instead of alert
+                document.getElementById('inputText').value = "Error connecting to AI. Please try again.";
             }
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('generateBtn').disabled = false;
         }
 
+        // --- UPDATED COPY BUTTON (No Alert) ---
         function copyText() {
             const copyText = document.getElementById("outputText");
             copyText.select();
             navigator.clipboard.writeText(copyText.value);
-            alert("Copied!");
+            
+            // Visual feedback
+            const btnText = document.getElementById("copyBtnText");
+            const originalHTML = btnText.innerHTML;
+            
+            // Change Text to Green
+            btnText.innerHTML = `<i data-lucide="check" class="w-3 h-3 text-green-600"></i> <span class="text-green-600 font-bold">Copied!</span>`;
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                btnText.innerHTML = originalHTML;
+                lucide.createIcons();
+            }, 2000);
         }
     </script>
 </body>
