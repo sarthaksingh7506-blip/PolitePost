@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog & Email Tips | PolitePost</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <script> tailwind.config = { theme: { extend: { fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] }, colors: { brand: { 600: '#0284c7' } } } } } </script>
+</head>
+<body class="bg-slate-50 font-sans">
+    
+    <nav class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+        <a href="index.html" class="font-bold text-xl text-slate-900">Polite<span class="text-brand-600">Post</span></a>
+        <a href="index.html" class="text-sm font-semibold text-slate-500 hover:text-brand-600">Back to Tool</a>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-6 py-20">
+        <h1 class="text-3xl font-bold mb-2">Office Communication Tips</h1>
+        <p class="text-slate-500 mb-12">How to sound professional in any situation.</p>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            
+            <article class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                <span class="text-xs font-bold text-brand-600 bg-blue-50 px-2 py-1 rounded mb-4 inline-block">Guide</span>
+                <h2 class="text-xl font-bold mb-2 text-slate-900">How to say "I told you so" professionally</h2>
+                <p class="text-slate-500 text-sm mb-4">You warned them, they didn't listen, and now it's broken. Here is how to point that out without being rude.</p>
+                <a href="#" class="text-brand-600 text-sm font-bold hover:underline">Read Article →</a>
+            </article>
+
+            <article class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded mb-4 inline-block">Templates</span>
+                <h2 class="text-xl font-bold mb-2 text-slate-900">5 Ways to say "No" to extra work</h2>
+                <p class="text-slate-500 text-sm mb-4">Don't let your boss overload you. Use these 5 scripts to decline additional tasks politely.</p>
+                <a href="#" class="text-brand-600 text-sm font-bold hover:underline">Read Article →</a>
+            </article>
+
+            <article class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded mb-4 inline-block">Career</span>
+                <h2 class="text-xl font-bold mb-2 text-slate-900">The art of the "Per my last email"</h2>
+                <p class="text-slate-500 text-sm mb-4">When to use it, when to avoid it, and what to say instead to get a reply.</p>
+                <a href="#" class="text-brand-600 text-sm font-bold hover:underline">Read Article →</a>
+            </article>
+
+        </div>
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>
