@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanBid AI - Free Proposal Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <div class="max-w-xl mx-auto p-6 mt-10 bg-white shadow-xl rounded-lg border-t-4 border-blue-600">
+        <h1 class="text-3xl font-bold text-center mb-2">✨ CleanBid AI</h1>
+        <p class="text-center text-gray-500 mb-8">Generate a professional cleaning quote instantly.</p>
+
+        <div id="form-container" class="space-y-4">
+            <div>
+                <label class="block text-sm font-bold mb-1">Client Business Name</label>
+                <input type="text" id="clientName" class="w-full p-3 border rounded focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Downtown Law Firm">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold mb-1">Square Footage</label>
+                    <input type="number" id="sqft" class="w-full p-3 border rounded focus:ring-2 focus:ring-blue-500 outline-none" placeholder="2500">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-1">Frequency</label>
+                    <select id="freq" class="w-full p-3 border rounded bg-white">
+                        <option>Weekly</option>
+                        <option>Bi-Weekly</option>
+                        <option>Monthly</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button onclick="generateProposal()" id="btn" class="w-full bg-blue-600 text-white font-bold py-3 rounded hover:bg-blue-700 transition shadow-md">
+                🚀 Generate Proposal PDF
+            </button>
+            
+            <p id="status" class="text-center text-sm text-gray-500 mt-2 hidden animate-pulse">
+                🤖 AI is analyzing rates & writing cover letter...
+            </p>
+        </div>
+
+        <div id="result" class="hidden text-center mt-6">
+            <div class="bg-green-100 p-4 rounded-lg border border-green-300 text-green-800 font-bold mb-4">
+                ✅ PDF Downloaded!
+            </div>
+            <p class="text-gray-600 text-sm">File saved to your downloads folder.</p>
+            <button onclick="location.reload()" class="mt-4 text-blue-500 underline text-sm">Create Another</button>
+        </div>
+    </div>
+
+    <script>
+        // ******************************************************
+        // I PUT YOUR EXACT URL HERE FROM THE SCREENSHOT
+        const API_URL = "https://cleanbid-api.sarthaksingh3891.workers.dev"; 
+        // ******************************************************
+
+        async function generateProposal() {
+            const clientName = document.getElementById('clientName').value;
+            const sqft = document.getElementById('sqft').value;
+            const freq = document.getElementById('freq').value;
+            const btn = document.getElementById('btn');
+            const status = document.getElementById('status');
+
+            if(!clientName || !sqft) return alert("Please fill in all fields");
+
+            // 1. Show Loading State
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            status.classList.remove('hidden');
+
+            try {
+                // 2. Send Data to Backend
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ clientName, sqft })
+                });
+
+                if (!response.ok) throw new Error("Backend Error");
+                const data = await response.json();
+
+                // 3. Create PDF
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Header
+                doc.setFontSize(22);
+                doc.setTextColor(33, 33, 33);
+                doc.text("Commercial Cleaning Proposal", 20, 20);
+                
+                doc.setFontSize(10);
+                doc.setTextColor(100, 100, 100);
+                doc.text(`Prepared for: ${clientName}`, 20, 30);
+                doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 35);
+
+                // Body (AI Text)
+                doc.setFontSize(14);
+                doc.setTextColor(0, 0, 0);
+                doc.text("Service Proposal", 20, 50);
+                
+                doc.setFontSize(11);
+                doc.setTextColor(60, 60, 60);
+                const splitText = doc.splitTextToSize(data.coverLetter, 170);
+                doc.text(splitText, 20, 60);
+
+                // Pricing Box
+                let y = 150; 
+                doc.setFillColor(240, 248, 255); // Light Blue
+                doc.rect(20, y, 170, 35, 'F');
+                
+                doc.setFontSize(14);
+                doc.setTextColor(0, 0, 0);
+                doc.text("Estimated Investment", 30, y + 10);
+                
+                doc.setFontSize(12);
+                doc.text(`Standard Clean (${freq}):`, 30, y + 22);
+                doc.text(`${data.symbol}${data.priceLow} / visit`, 140, y + 22);
+
+                doc.save(`${clientName}_Quote.pdf`);
+
+                // 4. Show Success
+                document.getElementById('form-container').classList.add('hidden');
+                document.getElementById('result').classList.remove('hidden');
+
+            } catch (error) {
+                alert("Error! Check your Backend URL.");
+                console.error(error);
+            }
+
+            btn.disabled = false;
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            status.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
+
