@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CleanBid AI | Professional Proposals</title>
+    <title>PolitePost | Professional Email Rewriter</title>
+    <meta name="description" content="Turn rough drafts into professional emails instantly. Private, free, and AI-powered.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -15,228 +15,186 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: { 
-                        navy: { 800: '#1e293b', 900: '#0f172a' }, // Professional Dark colors
-                        gold: { 500: '#d4af37' } // Subtle accent
+                        brand: { 50: '#f0f9ff', 100: '#e0f2fe', 500: '#0ea5e9', 600: '#0284c7', 900: '#0c4a6e' } 
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-navy-900 text-white font-sans antialiased">
+<body class="bg-white text-slate-900 font-sans antialiased min-h-screen flex flex-col">
 
-    <nav class="border-b border-white/5 bg-navy-900/90 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <nav class="border-b border-slate-100 bg-white sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <i data-lucide="shield-check" class="text-white w-6 h-6"></i>
-                <span class="font-bold text-xl tracking-wide">CleanBid<span class="text-slate-400">Pro</span></span>
+                <div class="bg-brand-50 rounded-lg p-1.5">
+                    <i data-lucide="feather" class="text-brand-600 w-5 h-5"></i>
+                </div>
+                <span class="font-bold text-xl tracking-tight">Polite<span class="text-brand-600">Post</span></span>
+            </div>
+            <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-500">
+                <div class="flex items-center gap-1 text-green-600 bg-green-50 px-3 py-1 rounded-full">
+                    <i data-lucide="lock" class="w-3 h-3"></i>
+                    <span>100% Private & Secure</span>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div class="relative pt-12 pb-20 px-4 text-center">
-        <h1 class="text-3xl md:text-5xl font-bold mb-4 tracking-tight">
-            Create High-End Proposals.
-        </h1>
-        <p class="text-slate-400 mb-10 max-w-xl mx-auto">Generate a contract-ready PDF proposal in seconds. No design skills needed.</p>
+    <div class="flex-grow pt-12 pb-20 px-4">
+        
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-slate-900 tracking-tight">
+                Don't Get Fired. <br> 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-blue-500">Sound Professional.</span>
+            </h1>
+            <p class="text-slate-500 text-lg">Turn your angry thoughts into office-safe emails instantly.</p>
+        </div>
 
-        <div class="max-w-lg mx-auto bg-navy-800 border border-slate-700 rounded-lg p-8 shadow-2xl relative">
+        <div class="max-w-3xl mx-auto bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/50 overflow-hidden relative">
+            <div class="p-1 bg-slate-50 border-b border-slate-100 flex items-center gap-2 px-4">
+                <div class="flex gap-1.5">
+                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <div class="ml-4 text-xs font-medium text-slate-400">New Message</div>
+            </div>
+
+            <div class="p-6 md:p-8">
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Your Draft (Angry/Informal)</label>
+                <textarea id="inputText" class="w-full h-32 bg-slate-50 border border-slate-200 rounded-xl p-4 text-slate-700 focus:ring-2 focus:ring-brand-500 outline-none resize-none placeholder-slate-400 transition" placeholder="e.g. Stop wasting my time with these stupid meetings!"></textarea>
+
+                <div class="flex flex-col md:flex-row justify-between items-center mt-4 gap-4">
+                    <div class="flex items-center gap-2 w-full md:w-auto">
+                        <span class="text-sm font-medium text-slate-500">Tone:</span>
+                        <div class="flex bg-slate-100 rounded-lg p-1">
+                            <button onclick="setTone('Professional')" class="tone-btn px-3 py-1.5 rounded-md text-sm font-medium bg-white text-slate-900 shadow-sm transition">Professional</button>
+                            <button onclick="setTone('Diplomatic')" class="tone-btn px-3 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:text-slate-700 transition">Diplomatic</button>
+                            <button onclick="setTone('Firm')" class="tone-btn px-3 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:text-slate-700 transition">Firm</button>
+                        </div>
+                    </div>
+                    
+                    <button onclick="rewriteText()" class="w-full md:w-auto bg-brand-600 hover:bg-brand-700 text-white font-semibold py-2.5 px-6 rounded-xl shadow-lg shadow-brand-500/30 flex items-center justify-center gap-2 transition transform hover:scale-[1.02]">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                        Rewrite
+                    </button>
+                </div>
+
+                <div id="loading" class="hidden py-8 text-center">
+                    <i data-lucide="loader-2" class="w-8 h-8 text-brand-500 animate-spin mx-auto mb-2"></i>
+                    <p class="text-sm text-slate-500 font-medium animate-pulse">Polishing your language...</p>
+                </div>
+
+                <div id="result" class="hidden mt-8 pt-8 border-t border-slate-100 animate-fade-in">
+                    <div class="flex justify-between items-end mb-2">
+                        <label class="block text-xs font-bold text-green-600 uppercase tracking-wider">Professional Version</label>
+                        <button onclick="copyText()" class="text-xs flex items-center gap-1 text-slate-400 hover:text-brand-600 transition">
+                            <i data-lucide="copy" class="w-3 h-3"></i> Copy
+                        </button>
+                    </div>
+                    <div class="relative group">
+                        <textarea id="outputText" readonly class="w-full h-40 bg-white border border-green-200 rounded-xl p-4 text-slate-800 focus:outline-none resize-none"></textarea>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-slate-50 border border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center text-center">
+                        <span class="text-xs font-bold text-slate-400 uppercase mb-1">Sponsored</span>
+                        <div class="w-full h-[90px] bg-white border border-slate-200 flex items-center justify-center text-slate-300 text-xs">
+                            (Your AdSense "In-Article" Ad Goes Here)
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            <div id="loading" class="hidden absolute inset-0 bg-navy-900/95 z-20 flex flex-col items-center justify-center rounded-lg">
-                <i data-lucide="loader" class="w-8 h-8 text-white animate-spin mb-4"></i>
-                <p class="text-white font-medium animate-pulse">Generating Contract...</p>
+            <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 flex justify-between items-center text-xs text-slate-400">
+                <div class="flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3"></i> No data is stored.</div>
+                <div>Powered by AI</div>
             </div>
+        </div>
 
-            <div id="form-container" class="space-y-6 text-left">
-                
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Your Company Name</label>
-                    <input type="text" id="senderName" class="w-full bg-navy-900 border border-slate-600 rounded p-3 text-white focus:border-white outline-none transition" placeholder="e.g. Prestige Facility Services">
+        <div class="max-w-4xl mx-auto mt-20 text-left space-y-12">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="text-brand-600 font-bold mb-4 flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-5 h-5"></i> Popular Translations
+                    </h3>
+                    <ul class="space-y-4 text-sm text-slate-600">
+                        <li><strong class="text-slate-900 block mb-1">"Stop wasting my time"</strong> "I would appreciate if we could streamline this process to ensure efficient use of resources."</li>
+                        <li><strong class="text-slate-900 block mb-1">"I told you so"</strong> "As noted in my previous correspondence, this outcome was anticipated."</li>
+                        <li><strong class="text-slate-900 block mb-1">"That's not my job"</strong> "I believe this task falls outside my current scope of responsibilities."</li>
+                    </ul>
                 </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Client Name</label>
-                    <input type="text" id="clientName" class="w-full bg-navy-900 border border-slate-600 rounded p-3 text-white focus:border-white outline-none transition" placeholder="e.g. Apex Law Partners">
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="text-slate-900 font-bold mb-4 flex items-center gap-2">
+                        <i data-lucide="help-circle" class="w-5 h-5"></i> Why use PolitePost?
+                    </h3>
+                    <p class="text-slate-500 mb-4 text-sm">In the corporate world, tone is everything. A single "rude" email can damage your reputation. PolitePost acts as an AI filter, ensuring your message is professional and workplace-appropriate.</p>
                 </div>
-                
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total Sq. Ft.</label>
-                        <input type="number" id="sqft" class="w-full bg-navy-900 border border-slate-600 rounded p-3 text-white focus:border-white outline-none transition" placeholder="2500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Frequency</label>
-                        <select id="freq" class="w-full bg-navy-900 border border-slate-600 rounded p-3 text-white focus:border-white outline-none">
-                            <option>Weekly</option>
-                            <option>Bi-Weekly</option>
-                            <option>Monthly</option>
-                            <option>Daily</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Currency</label>
-                    <select id="currency" class="w-full bg-navy-900 border border-slate-600 rounded p-3 text-white focus:border-white outline-none">
-                        <option value="USD">USD ($) - United States</option>
-                        <option value="INR">INR (₹) - India</option>
-                        <option value="EUR">EUR (€) - Europe</option>
-                        <option value="GBP">GBP (£) - UK</option>
-                    </select>
-                </div>
-
-                <button onclick="generateProposal()" class="w-full bg-white hover:bg-slate-200 text-navy-900 font-bold py-4 rounded shadow-lg transition transform hover:scale-[1.01] flex items-center justify-center gap-2 mt-4">
-                    <i data-lucide="file-check" class="w-5 h-5"></i>
-                    Download Proposal
-                </button>
-            </div>
-
-            <div id="result" class="hidden text-center py-6">
-                <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i data-lucide="check" class="w-8 h-8 text-white"></i>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-2">Proposal Ready</h3>
-                <p class="text-slate-400 mb-6 text-sm">Your document has been downloaded.</p>
-                <button onclick="location.reload()" class="text-white hover:text-slate-300 text-sm underline">Create New Proposal</button>
             </div>
         </div>
     </div>
 
+    <footer class="border-t border-slate-100 bg-white py-8 mt-auto">
+        <div class="max-w-5xl mx-auto px-6 text-center text-sm text-slate-400">
+            <p>&copy; 2025 PolitePost. All rights reserved.</p>
+            <div class="flex justify-center gap-4 mt-2">
+                <a href="about.html" class="hover:text-slate-600">About</a>
+                <a href="privacy.html" class="hover:text-slate-600">Privacy Policy</a>
+                <a href="terms.html" class="hover:text-slate-600">Terms</a>
+            </div>
+        </div>
+    </footer>
+
     <script>
         lucide.createIcons();
+        let selectedTone = "Professional";
+        // YOUR NEW BACKEND URL
+        const API_URL = "https://politepost-api.sarthaksingh3891.workers.dev"; 
 
-        // YOUR BACKEND URL
-        const API_URL = "https://cleanbid-api.sarthaksingh3891.workers.dev"; 
+        function setTone(tone) {
+            selectedTone = tone;
+            document.querySelectorAll('.tone-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+                btn.classList.add('text-slate-500');
+            });
+            event.target.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+            event.target.classList.remove('text-slate-500');
+        }
 
-        async function generateProposal() {
-            const senderName = document.getElementById('senderName').value;
-            const clientName = document.getElementById('clientName').value;
-            const sqft = document.getElementById('sqft').value;
-            const freq = document.getElementById('freq').value;
-            const currency = document.getElementById('currency').value;
-            
-            if(!senderName || !clientName || !sqft) return alert("Please fill in all fields");
+        async function rewriteText() {
+            const text = document.getElementById('inputText').value;
+            if(!text) return alert("Please type something first!");
 
             document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('result').classList.add('hidden');
 
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ senderName, clientName, sqft, freq, currency })
+                    body: JSON.stringify({ text, tone: selectedTone })
                 });
-
+                
                 if (!response.ok) throw new Error("Backend Error");
                 const data = await response.json();
-
-                // --- FORMATTING FIXES ---
-                // We use Codes (INR, USD) instead of symbols (₹) to prevent PDF errors
-                const pLow = data.priceLow.toLocaleString();
-                const pHigh = data.priceHigh.toLocaleString();
                 
-                // Construct the price string: "INR 12,000 - INR 14,000"
-                const priceText = `${currency} ${pLow} - ${currency} ${pHigh}`;
-
-                // --- PRO PDF GENERATION ---
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-
-                // 1. Minimalist Header (Dark Grey)
-                doc.setFillColor(30, 41, 59); 
-                doc.rect(0, 0, 210, 40, 'F');
-
-                doc.setTextColor(255, 255, 255);
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(18);
-                doc.text("COMMERCIAL CLEANING PROPOSAL", 20, 26);
-
-                // Date (Right Side of Header)
-                doc.setFontSize(10);
-                doc.setFont("helvetica", "normal");
-                doc.setTextColor(200, 200, 200);
-                doc.text(new Date().toLocaleDateString(), 185, 26, { align: "right" });
-
-                // 2. Info Block (Clean Layout)
-                const startY = 60;
-                
-                // Left Column (Client)
-                doc.setTextColor(150, 150, 150);
-                doc.setFontSize(8);
-                doc.text("PREPARED FOR", 20, startY);
-                doc.setTextColor(0, 0, 0);
-                doc.setFontSize(12);
-                doc.setFont("helvetica", "bold");
-                doc.text(clientName, 20, startY + 6);
-
-                // Right Column (Sender)
-                doc.setTextColor(150, 150, 150);
-                doc.setFontSize(8);
-                doc.setFont("helvetica", "normal");
-                doc.text("PREPARED BY", 185, startY, { align: "right" });
-                doc.setTextColor(0, 0, 0);
-                doc.setFontSize(12);
-                doc.setFont("helvetica", "bold");
-                doc.text(senderName, 185, startY + 6, { align: "right" });
-
-                // 3. Separator Line
-                doc.setDrawColor(200, 200, 200);
-                doc.line(20, startY + 20, 190, startY + 20);
-
-                // 4. Cover Letter Content
-                doc.setFontSize(10);
-                doc.setFont("helvetica", "normal");
-                doc.setTextColor(50, 50, 50);
-                
-                // Automatically handle text wrapping
-                const splitText = doc.splitTextToSize(data.coverLetter, 170);
-                doc.text(splitText, 20, startY + 35);
-
-                // 5. Pricing Section (The "Expensive" Look)
-                let priceY = 200; // Position near bottom
-                
-                // Top Black Line
-                doc.setDrawColor(0, 0, 0);
-                doc.setLineWidth(0.5);
-                doc.line(20, priceY, 190, priceY);
-
-                // Labels
-                doc.setFontSize(9);
-                doc.setFont("helvetica", "bold");
-                doc.setTextColor(0, 0, 0);
-                doc.text("SERVICE FREQUENCY", 20, priceY + 10);
-                doc.text("ESTIMATED INVESTMENT", 190, priceY + 10, { align: "right" });
-
-                // Values
-                doc.setFontSize(11);
-                doc.setFont("helvetica", "normal");
-                doc.text(freq, 20, priceY + 20);
-                
-                // The Price (Bold & Right Aligned)
-                doc.setFontSize(12);
-                doc.setFont("helvetica", "bold");
-                doc.text(priceText, 190, priceY + 20, { align: "right" });
-
-                // Bottom Line (Light Grey)
-                doc.setDrawColor(200, 200, 200);
-                doc.setLineWidth(0.1);
-                doc.line(20, priceY + 30, 190, priceY + 30);
-
-                // Footer
-                doc.setFontSize(8);
-                doc.setTextColor(150, 150, 150);
-                doc.text("Thank you for your business.", 105, 280, { align: "center" });
-
-                doc.save(`${clientName}_Proposal.pdf`);
-
-                document.getElementById('form-container').classList.add('hidden');
+                document.getElementById('outputText').value = data.result;
                 document.getElementById('result').classList.remove('hidden');
-
             } catch (error) {
-                alert("Error generating PDF. Please check your internet.");
+                alert("Connection error. Please try again.");
                 console.error(error);
             }
-
             document.getElementById('loading').classList.add('hidden');
+        }
+
+        function copyText() {
+            const copyText = document.getElementById("outputText");
+            copyText.select();
+            navigator.clipboard.writeText(copyText.value);
+            const btn = event.currentTarget;
+            btn.innerHTML = `<i data-lucide="check" class="w-3 h-3 text-green-600"></i> Copied`;
+            lucide.createIcons();
+            setTimeout(() => { btn.innerHTML = `<i data-lucide="copy" class="w-3 h-3"></i> Copy`; lucide.createIcons(); }, 2000);
         }
     </script>
 </body>
