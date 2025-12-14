@@ -1,59 +1,194 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CleanBid AI - Free Proposal Generator</title>
+    <title>CleanBid AI | Professional Proposals for Commercial Cleaners</title>
+    <meta name="description" content="Close more contracts with AI-generated cleaning proposals. Instant, professional, and free.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6', // Teal
+                            600: '#0d9488',
+                            900: '#134e4a',
+                        },
+                        dark: {
+                            900: '#0f172a', // Slate 900
+                            800: '#1e293b', // Slate 800
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="bg-dark-900 text-white font-sans antialiased selection:bg-brand-500 selection:text-white">
 
-    <div class="max-w-xl mx-auto p-6 mt-10 bg-white shadow-xl rounded-lg border-t-4 border-blue-600">
-        <h1 class="text-3xl font-bold text-center mb-2">✨ CleanBid AI</h1>
-        <p class="text-center text-gray-500 mb-8">Generate a professional cleaning quote instantly.</p>
-
-        <div id="form-container" class="space-y-4">
-            <div>
-                <label class="block text-sm font-bold mb-1">Client Business Name</label>
-                <input type="text" id="clientName" class="w-full p-3 border rounded focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Downtown Law Firm">
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-bold mb-1">Square Footage</label>
-                    <input type="number" id="sqft" class="w-full p-3 border rounded focus:ring-2 focus:ring-blue-500 outline-none" placeholder="2500">
+    <nav class="fixed w-full z-50 top-0 border-b border-white/10 bg-dark-900/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="sparkles" class="text-brand-500 h-6 w-6"></i>
+                    <span class="font-bold text-xl tracking-tight">CleanBid<span class="text-brand-500">AI</span></span>
                 </div>
-                <div>
-                    <label class="block text-sm font-bold mb-1">Frequency</label>
-                    <select id="freq" class="w-full p-3 border rounded bg-white">
-                        <option>Weekly</option>
-                        <option>Bi-Weekly</option>
-                        <option>Monthly</option>
-                    </select>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#tool" class="px-3 py-2 rounded-md text-sm font-medium hover:text-brand-500 transition">Generator</a>
+                        <a href="#features" class="px-3 py-2 rounded-md text-sm font-medium hover:text-brand-500 transition">How it Works</a>
+                        <a href="#" class="bg-brand-600 hover:bg-brand-500 text-white px-4 py-2 rounded-full text-sm font-bold transition shadow-lg shadow-brand-500/20">Sign Up Free</a>
+                    </div>
                 </div>
             </div>
-            
-            <button onclick="generateProposal()" id="btn" class="w-full bg-blue-600 text-white font-bold py-3 rounded hover:bg-blue-700 transition shadow-md">
-                🚀 Generate Proposal PDF
-            </button>
-            
-            <p id="status" class="text-center text-sm text-gray-500 mt-2 hidden animate-pulse">
-                🤖 AI is analyzing rates & writing cover letter...
-            </p>
+        </div>
+    </nav>
+
+    <div class="relative pt-32 pb-20 sm:pt-40 sm:pb-24 overflow-hidden">
+        <div class="absolute top-0 left-1/2 w-full -translate-x-1/2 h-full z-0 pointer-events-none">
+            <div class="absolute top-20 left-1/4 w-96 h-96 bg-brand-500/20 rounded-full blur-[128px]"></div>
+            <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[128px]"></div>
         </div>
 
-        <div id="result" class="hidden text-center mt-6">
-            <div class="bg-green-100 p-4 rounded-lg border border-green-300 text-green-800 font-bold mb-4">
-                ✅ PDF Downloaded!
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-6">
+                Stop Losing Hours to Paperwork. <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-blue-400">Win Contracts in Seconds.</span>
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-400">
+                The #1 AI Proposal Generator for commercial cleaning businesses. Enter details, get a professional PDF instantly. No signup required.
+            </p>
+            
+            <div id="tool" class="mt-16 max-w-xl mx-auto">
+                <div class="glass-panel rounded-2xl p-8 shadow-2xl relative overflow-hidden group">
+                    <div class="absolute -inset-[1px] bg-gradient-to-r from-brand-500 via-blue-500 to-brand-500 rounded-2xl opacity-20 group-hover:opacity-40 transition duration-500 blur-sm -z-10"></div>
+                    
+                    <div class="text-left mb-6">
+                        <h3 class="text-lg font-semibold text-white">Generate Your Proposal</h3>
+                        <p class="text-sm text-slate-400">AI will calculate pricing & write your cover letter.</p>
+                    </div>
+
+                    <div id="form-container" class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-1">Client Business Name</label>
+                            <input type="text" id="clientName" class="w-full bg-dark-800 border border-slate-700 rounded-lg p-3 text-white placeholder-slate-500 focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition" placeholder="e.g. Apex Law Firm">
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-1">Square Footage</label>
+                                <input type="number" id="sqft" class="w-full bg-dark-800 border border-slate-700 rounded-lg p-3 text-white placeholder-slate-500 focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition" placeholder="2500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-1">Frequency</label>
+                                <select id="freq" class="w-full bg-dark-800 border border-slate-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-brand-500 outline-none transition appearance-none">
+                                    <option>Weekly</option>
+                                    <option>Bi-Weekly</option>
+                                    <option>Monthly</option>
+                                    <option>One-Time Deep Clean</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button onclick="generateProposal()" id="btn" class="w-full bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-400 text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-500/25 transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                            Generate PDF Proposal
+                        </button>
+
+                        <div id="status" class="hidden flex items-center justify-center gap-2 text-brand-400 text-sm animate-pulse">
+                            <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+                            <span>Analyzing market rates & writing proposal...</span>
+                        </div>
+                    </div>
+
+                    <div id="result" class="hidden text-center py-6">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-green-500/20 rounded-full mb-4">
+                            <i data-lucide="check" class="w-8 h-8 text-green-500"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Proposal Downloaded!</h3>
+                        <p class="text-slate-400 mb-6">Check your downloads folder for the PDF.</p>
+                        
+                        <div class="bg-dark-800 rounded-lg p-4 border border-slate-700 text-left mb-6">
+                            <p class="text-xs font-bold text-brand-400 uppercase tracking-wider mb-2">Recommended Next Step</p>
+                            <a href="#" class="flex items-center justify-between group">
+                                <div>
+                                    <p class="font-semibold text-white group-hover:text-brand-400 transition">Get Contractor Insurance</p>
+                                    <p class="text-xs text-slate-500">Protect your new contract instantly.</p>
+                                </div>
+                                <i data-lucide="chevron-right" class="text-slate-500 group-hover:text-white transition"></i>
+                            </a>
+                        </div>
+
+                        <button onclick="location.reload()" class="text-slate-400 hover:text-white text-sm underline">Create Another Proposal</button>
+                    </div>
+                </div>
+                
+                <p class="mt-4 text-center text-xs text-slate-500">
+                    <i data-lucide="lock" class="w-3 h-3 inline mr-1"></i> Data is encrypted and never stored.
+                </p>
             </div>
-            <p class="text-gray-600 text-sm">File saved to your downloads folder.</p>
-            <button onclick="location.reload()" class="mt-4 text-blue-500 underline text-sm">Create Another</button>
         </div>
     </div>
 
+    <div id="features" class="py-20 bg-dark-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold">Why use CleanBid AI?</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-6 rounded-2xl bg-dark-900 border border-slate-800 hover:border-brand-500/50 transition duration-300">
+                    <div class="w-12 h-12 bg-brand-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <i data-lucide="brain-circuit" class="text-brand-500"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">AI-Powered Writing</h3>
+                    <p class="text-slate-400">Forget generic templates. Our AI writes a custom cover letter for every single client.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-dark-900 border border-slate-800 hover:border-brand-500/50 transition duration-300">
+                    <div class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <i data-lucide="globe" class="text-blue-500"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Global Pricing</h3>
+                    <p class="text-slate-400">Whether you are in New York or New Delhi, we detect your currency and adjust rates automatically.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-dark-900 border border-slate-800 hover:border-brand-500/50 transition duration-300">
+                    <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <i data-lucide="file-check" class="text-purple-500"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Instant PDF</h3>
+                    <p class="text-slate-400">Download a polished, branded PDF ready to email to your client in under 5 seconds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark-900 border-t border-slate-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-slate-500">
+            <p>&copy; 2024 CleanBid AI. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script>
+        // Initialize Icons
+        lucide.createIcons();
+
         // ******************************************************
-        // I PUT YOUR EXACT URL HERE FROM THE SCREENSHOT
+        // YOUR BACKEND URL GOES HERE (I pasted the one from your screenshot)
         const API_URL = "https://cleanbid-api.sarthaksingh3891.workers.dev"; 
         // ******************************************************
 
@@ -63,16 +198,18 @@
             const freq = document.getElementById('freq').value;
             const btn = document.getElementById('btn');
             const status = document.getElementById('status');
+            const formContainer = document.getElementById('form-container');
+            const result = document.getElementById('result');
 
             if(!clientName || !sqft) return alert("Please fill in all fields");
 
-            // 1. Show Loading State
+            // UI Loading State
             btn.disabled = true;
             btn.classList.add('opacity-50', 'cursor-not-allowed');
             status.classList.remove('hidden');
 
             try {
-                // 2. Send Data to Backend
+                // Call Backend
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -81,52 +218,74 @@
 
                 if (!response.ok) throw new Error("Backend Error");
                 const data = await response.json();
+                
+                // CHECK FOR AI ERROR HERE
+                if(data.coverLetter.includes("Error generating")) {
+                    alert("Warning: The AI could not write the text. Please check your API Key in Cloudflare. The PDF will still be generated with a placeholder.");
+                }
 
-                // 3. Create PDF
+                // Generate PDF
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF();
-
-                // Header
+                
+                // Add Logo/Brand Color
+                doc.setFillColor(13, 148, 136); // Teal Color
+                doc.rect(0, 0, 210, 40, 'F');
+                
+                doc.setFont("helvetica", "bold");
+                doc.setTextColor(255, 255, 255);
                 doc.setFontSize(22);
-                doc.setTextColor(33, 33, 33);
-                doc.text("Commercial Cleaning Proposal", 20, 20);
+                doc.text("Cleaning Proposal", 20, 25);
+                
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(10);
+                doc.text("Prepared for:", 20, 60);
+                doc.setFontSize(14);
+                doc.setTextColor(0, 0, 0);
+                doc.text(clientName, 20, 67);
                 
                 doc.setFontSize(10);
                 doc.setTextColor(100, 100, 100);
-                doc.text(`Prepared for: ${clientName}`, 20, 30);
-                doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 35);
+                doc.text(`Date: ${new Date().toLocaleDateString()}`, 150, 60);
 
-                // Body (AI Text)
-                doc.setFontSize(14);
+                // Cover Letter
+                doc.setFontSize(12);
                 doc.setTextColor(0, 0, 0);
-                doc.text("Service Proposal", 20, 50);
+                doc.text("Service Overview", 20, 90);
                 
-                doc.setFontSize(11);
+                doc.setFontSize(10);
                 doc.setTextColor(60, 60, 60);
                 const splitText = doc.splitTextToSize(data.coverLetter, 170);
-                doc.text(splitText, 20, 60);
+                doc.text(splitText, 20, 100);
 
-                // Pricing Box
-                let y = 150; 
-                doc.setFillColor(240, 248, 255); // Light Blue
-                doc.rect(20, y, 170, 35, 'F');
+                // Pricing Table
+                let y = 180; 
+                doc.setDrawColor(200, 200, 200);
+                doc.line(20, y, 190, y);
                 
                 doc.setFontSize(14);
+                doc.setTextColor(13, 148, 136); // Teal
+                doc.text("Estimated Pricing", 20, y + 10);
+                
+                doc.setFontSize(11);
                 doc.setTextColor(0, 0, 0);
-                doc.text("Estimated Investment", 30, y + 10);
+                doc.text(`Frequency: ${freq}`, 20, y + 25);
                 
                 doc.setFontSize(12);
-                doc.text(`Standard Clean (${freq}):`, 30, y + 22);
-                doc.text(`${data.symbol}${data.priceLow} / visit`, 140, y + 22);
+                doc.setFont("helvetica", "bold");
+                doc.text(`${data.symbol}${data.priceLow} - ${data.symbol}${data.priceHigh}`, 150, y + 25);
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "normal");
+                doc.text("/ visit", 185, y + 25);
 
-                doc.save(`${clientName}_Quote.pdf`);
+                doc.save(`${clientName}_Proposal.pdf`);
 
-                // 4. Show Success
-                document.getElementById('form-container').classList.add('hidden');
-                document.getElementById('result').classList.remove('hidden');
+                // Show Success
+                formContainer.classList.add('hidden');
+                result.classList.remove('hidden');
 
             } catch (error) {
-                alert("Error! Check your Backend URL.");
+                alert("Connection failed! Please make sure your Backend URL is correct.");
                 console.error(error);
             }
 
@@ -137,4 +296,3 @@
     </script>
 </body>
 </html>
-
