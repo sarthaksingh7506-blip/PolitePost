@@ -151,6 +151,7 @@
                     <div class="w-full md:w-auto">
                         <select id="languageSelect" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-2.5 outline-none font-medium">
                             <option value="English">🇺🇸 English</option>
+                            <option value="British English">🇬🇧 English (UK)</option>
                             <option value="Spanish">🇪🇸 Spanish</option>
                             <option value="French">🇫🇷 French</option>
                             <option value="German">🇩🇪 German</option>
@@ -272,6 +273,7 @@
         let currentMode = "rewrite";
         let currentIntent = "Professional Reply";
 
+        // --- TEMPLATE LOGIC ---
         function applyTemplate(type) {
             const input = document.getElementById('inputText');
             let text = "";
@@ -282,6 +284,8 @@
             else if(type === 'angry') text = "Why did you do that? You messed up the project and now I have to fix it. It's annoying.";
             
             input.value = text;
+            
+            // Visual feedback
             input.classList.add('bg-brand-50', 'ring-2', 'ring-brand-200');
             setTimeout(() => {
                 input.classList.remove('bg-brand-50', 'ring-2', 'ring-brand-200');
@@ -306,10 +310,11 @@
             const analyzeBtn = document.getElementById('analyzeBtn');
             const templateArea = document.getElementById('templateArea');
 
+            // HIDE/SHOW LOGIC FOR TEMPLATES
             if(mode === 'rewrite') {
                 inputLabel.innerText = "Paste your rough draft";
                 inputText.placeholder = "e.g. Stop wasting my time!";
-                templateArea.classList.remove('hidden');
+                templateArea.classList.remove('hidden'); // SHOW
                 replyIntents.classList.add('hidden');
                 toneButtons.classList.remove('hidden');
                 analyzeBtn.classList.remove('hidden');
@@ -317,7 +322,7 @@
             } else if (mode === 'reply') {
                 inputLabel.innerText = "Paste the email you received";
                 inputText.placeholder = "Paste the email from your boss/client here...";
-                templateArea.classList.add('hidden');
+                templateArea.classList.add('hidden'); // HIDE
                 replyIntents.classList.remove('hidden');
                 toneButtons.classList.remove('hidden');
                 analyzeBtn.classList.add('hidden');
@@ -325,7 +330,7 @@
             } else {
                 inputLabel.innerText = "Paste the long email thread";
                 inputText.placeholder = "Paste the messy long email here...";
-                templateArea.classList.add('hidden');
+                templateArea.classList.add('hidden'); // HIDE
                 replyIntents.classList.add('hidden');
                 toneButtons.classList.add('hidden');
                 analyzeBtn.classList.add('hidden');
@@ -349,7 +354,6 @@
             event.target.classList.add('ring-2', 'ring-brand-500');
         }
 
-        // --- NEW: VISUAL VALIDATION (No Alerts) ---
         function validateInput() {
             const text = document.getElementById('inputText').value;
             if(!text.trim()) {
@@ -422,14 +426,12 @@
                 document.getElementById('result').classList.remove('hidden');
                 document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'center' });
             } catch (error) {
-                // UI Error Message (No Alert)
                 document.getElementById('inputText').value = "Error connecting to AI. Please try again.";
             }
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('generateBtn').disabled = false;
         }
 
-        // --- NEW: COPY BUTTON (No Alert) ---
         function copyText() {
             const copyText = document.getElementById("outputText");
             copyText.select();
@@ -438,7 +440,6 @@
             const btnText = document.getElementById("copyBtnText");
             const originalHTML = btnText.innerHTML;
             
-            // Change button text temporarily
             btnText.innerHTML = `<i data-lucide="check" class="w-3 h-3 text-green-600"></i> <span class="text-green-600 font-bold">Copied!</span>`;
             lucide.createIcons();
             
