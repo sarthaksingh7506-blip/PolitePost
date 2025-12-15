@@ -9,6 +9,10 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
     <script>
         tailwind.config = {
             theme: {
@@ -32,6 +36,11 @@
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <div class="fixed inset-0 -z-10">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-200/40 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-200/40 rounded-full blur-3xl"></div>
+    </div>
 
     <nav class="border-b border-white/50 bg-white/80 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -155,7 +164,6 @@
                     <div class="w-full md:w-auto">
                         <select id="languageSelect" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 block w-full p-2.5 outline-none font-medium">
                             <option value="English">🇺🇸 English</option>
-                            <option value="British English">🇬🇧 English (UK)</option>
                             <option value="Spanish">🇪🇸 Spanish</option>
                             <option value="French">🇫🇷 French</option>
                             <option value="German">🇩🇪 German</option>
@@ -196,7 +204,7 @@
             </div>
         </div>
 
-        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center mb-20">
             <div class="space-y-6">
                 <h2 class="text-3xl font-bold text-slate-900">Why professionals rely on PolitePost</h2>
                 <p class="text-slate-500 leading-relaxed">
@@ -226,6 +234,68 @@
                 </div>
             </div>
         </div>
+
+        <div class="max-w-6xl mx-auto mt-24">
+            <div class="flex justify-between items-end mb-8 px-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Communication Tips</h2>
+                    <p class="text-slate-500">Master the art of corporate speak.</p>
+                </div>
+                <a href="blog.html" class="text-brand-600 font-semibold hover:underline hidden md:block">View all articles →</a>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 px-4">
+                <a href="article-told-you-so.html" class="group bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <span class="text-[10px] font-bold text-brand-600 bg-brand-50 px-2 py-1 rounded-full uppercase">Guide</span>
+                    <h3 class="font-bold text-slate-900 mt-3 mb-2 group-hover:text-brand-600 transition">How to say "I told you so" professionally</h3>
+                    <p class="text-xs text-slate-500 line-clamp-2">You warned them, they didn't listen. Here is how to point that out without being rude.</p>
+                </a>
+
+                <a href="article-say-no.html" class="group bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full uppercase">Templates</span>
+                    <h3 class="font-bold text-slate-900 mt-3 mb-2 group-hover:text-brand-600 transition">5 Ways to say "No" to extra work</h3>
+                    <p class="text-xs text-slate-500 line-clamp-2">Don't let your boss overload you. Use these 5 scripts to decline politely.</p>
+                </a>
+
+                <a href="article-per-my-last-email.html" class="group bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <span class="text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded-full uppercase">Career</span>
+                    <h3 class="font-bold text-slate-900 mt-3 mb-2 group-hover:text-brand-600 transition">The art of the "Per my last email"</h3>
+                    <p class="text-xs text-slate-500 line-clamp-2">Is it rude? Yes. Here is what to say instead to get a reply.</p>
+                </a>
+            </div>
+            
+            <div class="text-center mt-6 md:hidden">
+                <a href="blog.html" class="text-brand-600 font-semibold hover:underline">View all articles →</a>
+            </div>
+        </div>
+
+        <div class="max-w-4xl mx-auto mt-24 mb-20 px-4">
+            <h2 class="text-3xl font-bold text-center text-slate-900 mb-10">Frequently Asked Questions</h2>
+            
+            <div class="space-y-4">
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                        <i data-lucide="lock" class="w-4 h-4 text-brand-600"></i> Is my data private?
+                    </h3>
+                    <p class="text-slate-500 text-sm mt-2">Yes. We do not store, log, or read your emails. Your text is processed by a secure AI model and immediately discarded. No login is required.</p>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                        <i data-lucide="zap" class="w-4 h-4 text-yellow-500"></i> Is this tool free?
+                    </h3>
+                    <p class="text-slate-500 text-sm mt-2">Yes, PolitePost is 100% free to use for unlimited rewrites. We are supported by minimal ads to keep the servers running.</p>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                        <i data-lucide="smartphone" class="w-4 h-4 text-green-500"></i> Does it work on mobile?
+                    </h3>
+                    <p class="text-slate-500 text-sm mt-2">Absolutely. You can even add PolitePost to your home screen as an app to fix emails on the go.</p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <footer class="bg-white border-t border-slate-200 pt-16 pb-8 mt-auto">
@@ -277,7 +347,6 @@
         let currentMode = "rewrite";
         let currentIntent = "Professional Reply";
 
-        // --- TEMPLATE LOGIC ---
         function applyTemplate(type) {
             const input = document.getElementById('inputText');
             let text = "";
@@ -288,23 +357,19 @@
             else if(type === 'angry') text = "Why did you do that? You messed up the project and now I have to fix it. It's annoying.";
             
             input.value = text;
-            
-            // Visual feedback
             input.classList.add('bg-brand-50', 'ring-2', 'ring-brand-200');
             setTimeout(() => {
                 input.classList.remove('bg-brand-50', 'ring-2', 'ring-brand-200');
             }, 400);
         }
 
-        // --- VOICE LOGIC ---
         let recognition;
         let isRecording = false;
 
-        // Check browser support
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
-            recognition.continuous = false; // Stop after silence
+            recognition.continuous = false;
             recognition.interimResults = false;
             recognition.lang = 'en-US';
 
@@ -336,12 +401,10 @@
             
             recognition.onerror = function(event) {
                 console.error("Speech error", event.error);
-                // No Alert - just reset
                 isRecording = false;
                 document.getElementById('micPulse').classList.add('hidden');
             };
         } else {
-            // Hide mic button if unsupported
             document.getElementById('micBtn').style.display = 'none';
         }
 
@@ -354,7 +417,6 @@
             }
         }
 
-        // --- MAIN APP LOGIC ---
         function setMode(mode) {
             currentMode = mode;
             ['tabRewrite', 'tabReply', 'tabSummarize'].forEach(id => {
@@ -509,6 +571,15 @@
                 btnText.innerHTML = originalHTML;
                 lucide.createIcons();
             }, 2000);
+        }
+
+        // PWA Installation Logic
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('App Installed!', reg.scope))
+                    .catch(err => console.log('App Fail:', err));
+            });
         }
     </script>
 </body>
