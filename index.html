@@ -33,11 +33,6 @@
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col relative overflow-x-hidden">
 
-    <div class="fixed inset-0 -z-10">
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-200/40 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-200/40 rounded-full blur-3xl"></div>
-    </div>
-
     <nav class="border-b border-white/50 bg-white/80 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -127,7 +122,16 @@
                     </button>
                 </div>
 
-                <textarea id="inputText" class="w-full h-40 bg-white border border-slate-200 rounded-2xl p-5 text-slate-700 focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none resize-none placeholder-slate-300 transition" placeholder="e.g. Stop wasting my time!"></textarea>
+                <div class="relative w-full">
+                    <textarea id="inputText" class="w-full h-40 bg-white border border-slate-200 rounded-2xl p-5 pr-12 text-slate-700 focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none resize-none placeholder-slate-300 transition" placeholder="e.g. Stop wasting my time!"></textarea>
+                    
+                    <button id="micBtn" onclick="toggleSpeech()" class="absolute top-3 right-3 p-2 rounded-full bg-slate-100 text-slate-400 hover:bg-brand-100 hover:text-brand-600 transition group" title="Speak">
+                        <i data-lucide="mic" class="w-5 h-5 group-hover:scale-110 transition"></i>
+                        <span id="micPulse" class="absolute inset-0 rounded-full bg-red-500 opacity-75 animate-ping hidden"></span>
+                    </button>
+                </div>
+                
+                <p id="speechStatus" class="text-xs text-brand-600 font-bold mt-2 hidden animate-pulse">Listening... Speak now.</p>
                 
                 <div id="scorePanel" class="hidden mb-6 mt-4 bg-slate-50 border border-slate-200 rounded-xl p-4 fade-in">
                     <div class="flex justify-between items-center mb-2">
@@ -292,6 +296,65 @@
             }, 400);
         }
 
+        // --- VOICE LOGIC ---
+        let recognition;
+        let isRecording = false;
+
+        // Check browser support
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false; // Stop after silence
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = function() {
+                isRecording = true;
+                document.getElementById('micPulse').classList.remove('hidden');
+                document.getElementById('micBtn').classList.add('text-red-500', 'bg-red-50');
+                document.getElementById('speechStatus').classList.remove('hidden');
+                document.getElementById('inputText').placeholder = "Listening...";
+            };
+
+            recognition.onend = function() {
+                isRecording = false;
+                document.getElementById('micPulse').classList.add('hidden');
+                document.getElementById('micBtn').classList.remove('text-red-500', 'bg-red-50');
+                document.getElementById('speechStatus').classList.add('hidden');
+                document.getElementById('inputText').placeholder = "Type here... or click the mic to speak!";
+            };
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                const input = document.getElementById('inputText');
+                if(input.value.length > 0) {
+                    input.value += " " + transcript;
+                } else {
+                    input.value = transcript;
+                }
+            };
+            
+            recognition.onerror = function(event) {
+                console.error("Speech error", event.error);
+                // No Alert - just reset
+                isRecording = false;
+                document.getElementById('micPulse').classList.add('hidden');
+            };
+        } else {
+            // Hide mic button if unsupported
+            document.getElementById('micBtn').style.display = 'none';
+        }
+
+        function toggleSpeech() {
+            if (!recognition) return;
+            if (isRecording) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        }
+
+        // --- MAIN APP LOGIC ---
         function setMode(mode) {
             currentMode = mode;
             ['tabRewrite', 'tabReply', 'tabSummarize'].forEach(id => {
@@ -310,11 +373,10 @@
             const analyzeBtn = document.getElementById('analyzeBtn');
             const templateArea = document.getElementById('templateArea');
 
-            // HIDE/SHOW LOGIC FOR TEMPLATES
             if(mode === 'rewrite') {
                 inputLabel.innerText = "Paste your rough draft";
                 inputText.placeholder = "e.g. Stop wasting my time!";
-                templateArea.classList.remove('hidden'); // SHOW
+                templateArea.classList.remove('hidden');
                 replyIntents.classList.add('hidden');
                 toneButtons.classList.remove('hidden');
                 analyzeBtn.classList.remove('hidden');
@@ -322,7 +384,7 @@
             } else if (mode === 'reply') {
                 inputLabel.innerText = "Paste the email you received";
                 inputText.placeholder = "Paste the email from your boss/client here...";
-                templateArea.classList.add('hidden'); // HIDE
+                templateArea.classList.add('hidden');
                 replyIntents.classList.remove('hidden');
                 toneButtons.classList.remove('hidden');
                 analyzeBtn.classList.add('hidden');
@@ -330,7 +392,7 @@
             } else {
                 inputLabel.innerText = "Paste the long email thread";
                 inputText.placeholder = "Paste the messy long email here...";
-                templateArea.classList.add('hidden'); // HIDE
+                templateArea.classList.add('hidden');
                 replyIntents.classList.add('hidden');
                 toneButtons.classList.add('hidden');
                 analyzeBtn.classList.add('hidden');
